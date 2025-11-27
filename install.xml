@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modification>
+  <name>Websky Viewed</name>
+  <code>websky Viewed</code>
+  <version>1.0</version>
+  <author>Websky</author>
+  <link>opencart-ir.com</link>
+
+  <file path="catalog/controller/extension/module/slideshow.php">
+   
+    <operation>
+      <search><![CDATA[
+		$this->document->addStyle('catalog/view/javascript/jquery/swiper/css/opencart.css');
+      ]]></search>
+      <add position="replace"><![CDATA[// Disabled by Websky]]></add>
+    </operation>
+   
+  </file>
+
+  <file path="catalog/controller/extension/module/carousel.php">
+    <operation>
+      <search><![CDATA[
+		$this->document->addStyle('catalog/view/javascript/jquery/swiper/css/opencart.css');
+      ]]></search>
+      <add position="replace"><![CDATA[// Disabled by Websky]]></add>
+    </operation>
+  </file>
+
+</modification>
