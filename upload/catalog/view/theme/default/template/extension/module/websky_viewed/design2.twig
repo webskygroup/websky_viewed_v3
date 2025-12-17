@@ -1,0 +1,57 @@
+
+	<div class="container mt-5">
+    <div class="row">
+
+        {% for module in modules %}
+            {% if module.product_data %}
+
+                <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
+                    <div class="dk-box">
+
+                        <h4 class="dk-title">{{ module.title }}</h4>
+                        <p class="dk-subtitle">{{ module.sub_title }}</p>
+                        <div class="image-grid">
+                            <div class="dk-vertical-line"></div>
+
+                            {% set i = 0 %}
+                            {% for product in module.product_data %}
+                                {% if i < 4 %}
+
+                                    {% if i == 0 or i == 2 %}
+                                        <div class="row dk-row">
+                                    {% endif %}
+
+                                    <div class="col-xs-6 dk-col">
+                                        <a href="{{ product.href }}" title="{{ product.name }}">
+                                            <img src="{{ product.thumb }}" alt="{{ product.name }}" class="dk-img">
+                                        </a>
+                                    </div>
+
+                                    {% if i == 1 or i == 3 or loop.last %}
+                                        </div>
+                                    {% endif %}
+
+                                    {% if i == 1 %}
+                                        <div class="dk-mid-line"></div>
+                                    {% endif %}
+
+                                    {% set i = i + 1 %}
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+
+                        <div class="dk-horizontal-line"></div>
+                        {% if module.href %}
+                        <a href="{{module.href}}" class="dk-link">{{text_show_all}}</a>
+                          {% endif %}
+                    </div>
+                </div>
+
+            {% endif %}
+        {% endfor %}
+
+    </div>
+</div>
+
+
+ 

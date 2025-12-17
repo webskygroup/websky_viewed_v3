@@ -90,12 +90,27 @@ class ControllerExtensionModulewebskyViewed extends Controller
 		}
 
 
+		if (isset($module_info['design'])) {
+			$data['design'] = $module_info['design'];
+		} else {
+			$data['design'] = '';
+		}
+
 		if (isset($module_info['heading'])) {
 			$data['heading'] = $module_info['heading'];
 		} else {
 			$data['heading'] = array(
 				'1' => 'your favorite product sort by [categoryName]',
 				'2' => 'محصولات [categoryName] بر اساس سلیقه شما'
+			);
+		}
+
+		if (isset($module_info['sub_heading'])) {
+			$data['sub_heading'] = $module_info['sub_heading'];
+		} else {
+			$data['sub_heading'] = array(
+				'1' => 'your favorite product ',
+				'2' =>'بر اساس سلیقه شما'
 			);
 		}
 
@@ -148,7 +163,7 @@ class ControllerExtensionModulewebskyViewed extends Controller
 		}
 
 		$data['user_token'] = $this->session->data['user_token'];
-		$data['current_version'] = "1.1.3";
+		$data['current_version'] = "1.2.0";
 		$data['upgrade'] = false;
 
 		$url = 'https://opencart-ir.com/version/index.php?route=extension/websky_lastversion/module/websky_lastversion';

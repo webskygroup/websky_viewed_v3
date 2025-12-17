@@ -15,6 +15,7 @@ $_['entry_heading']      = 'عنوان ماژول در سایت';
 $_['entry_product']    = 'محصولات';
 $_['entry_width']       = 'عرض';
 $_['entry_height']       = 'طول';
+$_['entry_design']       = 'طرح';
 $_['edit']      = 'ویرایش';
 $_['entry_name']       = 'نام ماژول';
 $_['entry_status']       = 'وضعیت';
@@ -24,6 +25,9 @@ $_['entry_category']       = 'دسته بندی';
 $_['text_category']       = 'دسته بندی ها';
 $_['entry_display_type']       = 'نمایش بر اساس';
 $_['entry_order_by']   ='ترتیب';
+$_['text_design_1']   ='طرح 1';
+$_['text_design_2']   ='طرح 2';
+
 $_['text_asc']   ='صعودی';
 $_['text_desc']   ='نزولی';
 $_['text_sort_dateadded']   ='تاریخ افزودن';

@@ -97,14 +97,16 @@ class ControllerExtensionModulewebskyViewed extends Controller
 				$heading = $setting['heading'][$this->config->get('config_language_id')];
 				$title = str_replace("[manufacturerName]", '', $heading);
 				$title = str_replace("[categoryName]", '', $title);
+                $sub_title =$setting['sub_heading'][$this->config->get('config_language_id')];
 
 				$data['modules'][] = [
 					'product_data' => $product_data,
 					'title' => $title,
+					'sub_title' => $sub_title,
+					'href' =>false,
 				];
 
-				return $this->load->view('extension/module/websky_viewed', $data);
-
+				
 			} elseif ($display_type == 'by_category') {
 				$this->load->model('catalog/category');
 
@@ -201,16 +203,17 @@ class ControllerExtensionModulewebskyViewed extends Controller
 						$heading = $setting['heading'][$this->config->get('config_language_id')];
 						$title = str_replace("[categoryName]", $category_info['name'], $heading);
 						$title = str_replace("[manufacturerName]", '', $title);
+                       $sub_title =$setting['sub_heading'][$this->config->get('config_language_id')];
 
 						$data['modules'][] = [
 							'product_data' => $product_data,
 							'title' => $title,
+							'sub_title' => $sub_title,
+							'href' => $this->url->link('product/category', 'language=' . $this->config->get('config_language') . '&category_id=' .  $category['category_id'])
 						];
 
 					}
 				}
-
-				return $this->load->view('extension/module/websky_viewed', $data);
 
 			} elseif ($display_type == 'by_manufacturer') {
 				$this->load->model('catalog/manufacturer');
@@ -313,17 +316,21 @@ class ControllerExtensionModulewebskyViewed extends Controller
 						$heading = $setting['heading'][$this->config->get('config_language_id')];
 						$title = str_replace("[manufacturerName]", $manufacturer_info['name'], $heading);
 						$title = str_replace("[categoryName]", '', $title);
+                              $sub_title =$setting['sub_heading'][$this->config->get('config_language_id')];
 
 						$data['modules'][] = [
 							'product_data' => $product_data,
 							'title' => $title,
+							'sub_title' => $sub_title,
+							'href' => $this->url->link('product/manufacturer', 'language=' . $this->config->get('config_language') . '&manufacturer_id=' .  $manufacturer['manufacturer_id'])
 						];
 
 					}
 				}
-				return $this->load->view('extension/module/websky_viewed', $data);
-
+			
 			}
+			return $this->load->view('extension/module/websky_viewed/design'.$setting['design'], $data);
+
 
 		} else {
 			return '';

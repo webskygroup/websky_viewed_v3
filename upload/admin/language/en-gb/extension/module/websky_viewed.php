@@ -33,7 +33,7 @@ $_['text_type_manufacturer']       = 'By Manufacturer Sort';
 $_['text_delet']      = 'delete';
 $_['edit']      = 'edit';
 $_['entry_progress']          = 'progress';
-
+$_['entry_design']       = 'design';
 $_['entry_name']       = 'Module Name';
 $_['entry_heading']      = 'Heading';
 $_['entry_limit']       = 'Limit';
@@ -44,6 +44,10 @@ $_['entry_design']       = 'design';
 
 $_['help_heading']='If the product display is based on the all viewed products, do not select the categoryName and manufacturerName values.';
 $_['entry_order_by']   ='Order by';
+
+$_['text_design_1']   ='design 1';
+$_['text_design_2']   ='design 2';
+
 $_['text_asc']   ='Ascending ';
 $_['text_desc']   ='Descending ';
 $_['text_sort_dateadded']   ='date added';
