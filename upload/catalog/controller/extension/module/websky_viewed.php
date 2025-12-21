@@ -88,7 +88,7 @@ class ControllerExtensionModulewebskyViewed extends Controller
 							'tax' => $tax,
 							'date_end' => $date_end,
 							'minimum' => $result['minimum'] > 0 ? $result['minimum'] : 1,
-							'href' => $this->url->link('product/product', 'language=' . $this->config->get('config_language') . '&product_id=' . $result['product_id'])
+							'href' => $this->url->link('product/product', 'product_id=' . $result['product_id'])
 						];
 
 					}
@@ -209,7 +209,7 @@ class ControllerExtensionModulewebskyViewed extends Controller
 							'product_data' => $product_data,
 							'title' => $title,
 							'sub_title' => $sub_title,
-							'href' => $this->url->link('product/category', 'language=' . $this->config->get('config_language') . '&category_id=' .  $category['category_id'])
+							'href' => $this->url->link('product/category', '&path=' .  $category['category_id'])
 						];
 
 					}
@@ -322,7 +322,7 @@ class ControllerExtensionModulewebskyViewed extends Controller
 							'product_data' => $product_data,
 							'title' => $title,
 							'sub_title' => $sub_title,
-							'href' => $this->url->link('product/manufacturer', 'language=' . $this->config->get('config_language') . '&manufacturer_id=' .  $manufacturer['manufacturer_id'])
+							'href' => $this->url->link('product/manufacturer/info', 'language=' . $this->config->get('config_language') . '&manufacturer_id=' .  $manufacturer['manufacturer_id'])
 						];
 
 					}

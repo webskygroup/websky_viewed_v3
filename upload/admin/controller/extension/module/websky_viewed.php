@@ -163,7 +163,7 @@ class ControllerExtensionModulewebskyViewed extends Controller
 		}
 
 		$data['user_token'] = $this->session->data['user_token'];
-		$data['current_version'] = "1.2.1";
+		$data['current_version'] = "1.2.2";
 		$data['upgrade'] = false;
 
 		$url = 'https://opencart-ir.com/version/index.php?route=extension/websky_lastversion/module/websky_lastversion';
