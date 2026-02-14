@@ -24,21 +24,74 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-      - name: Bump middle version and reset patch
+      - name: Detect bump type from commit messages
+        id: bump
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          BEFORE_SHA="${{ github.event.before }}"
+          AFTER_SHA="${{ github.sha }}"
+
+          if [[ "$BEFORE_SHA" =~ ^0+$ ]]; then
+            MESSAGES=$(git log --pretty=%s -n 1 "$AFTER_SHA")
+          else
+            MESSAGES=$(git log --pretty=%s "$BEFORE_SHA..$AFTER_SHA")
+          fi
+
+          BUMP_TYPE="patch"
+
+          if echo "$MESSAGES" | grep -Eiq '(\[major\]|BREAKING CHANGE|^[a-zA-Z0-9_-]+(\(.+\))?!:)'; then
+            BUMP_TYPE="major"
+          elif echo "$MESSAGES" | grep -Eiq '(^feat(\(.+\))?:|\[minor\])'; then
+            BUMP_TYPE="minor"
+          elif echo "$MESSAGES" | grep -Eiq '(^fix(\(.+\))?:|\[patch\])'; then
+            BUMP_TYPE="patch"
+          fi
+
+          echo "bump_type=${BUMP_TYPE}" >> "$GITHUB_OUTPUT"
+          echo "Detected bump type: ${BUMP_TYPE}"
+
+      - name: Bump version
         id: version
         shell: bash
         run: |
           set -euo pipefail
 
+          BUMP_TYPE="${{ steps.bump.outputs.bump_type }}"
           CURRENT_VERSION=$(grep -oPm1 '(?<=<version>)[0-9]+\.[0-9]+\.[0-9]+(?=</version>)' install.xml)
           IFS='.' read -r MAJOR MINOR PATCH <<< "$CURRENT_VERSION"
 
-          NEXT_MINOR=$((MINOR + 1))
-          NEW_VERSION="${MAJOR}.${NEXT_MINOR}.0"
+          case "$BUMP_TYPE" in
+            major)
+              NEXT_MAJOR=$((MAJOR + 1))
+              NEW_VERSION="${NEXT_MAJOR}.0.0"
+              ;;
+            minor)
+              NEXT_MINOR=$((MINOR + 1))
+              NEW_VERSION="${MAJOR}.${NEXT_MINOR}.0"
+              ;;
+            *)
+              NEXT_PATCH=$((PATCH + 1))
+              NEW_VERSION="${MAJOR}.${MINOR}.${NEXT_PATCH}"
+              ;;
+          esac
 
           while git rev-parse -q --verify "refs/tags/v${NEW_VERSION}" >/dev/null; do
-            NEXT_MINOR=$((NEXT_MINOR + 1))
-            NEW_VERSION="${MAJOR}.${NEXT_MINOR}.0"
+            case "$BUMP_TYPE" in
+              major)
+                NEXT_MAJOR=$((NEXT_MAJOR + 1))
+                NEW_VERSION="${NEXT_MAJOR}.0.0"
+                ;;
+              minor)
+                NEXT_MINOR=$((NEXT_MINOR + 1))
+                NEW_VERSION="${MAJOR}.${NEXT_MINOR}.0"
+                ;;
+              *)
+                NEXT_PATCH=$((NEXT_PATCH + 1))
+                NEW_VERSION="${MAJOR}.${MINOR}.${NEXT_PATCH}"
+                ;;
+            esac
           done
 
           sed -Ei "s#(<version>)[0-9]+\.[0-9]+\.[0-9]+(</version>)#\1${NEW_VERSION}\2#" install.xml
