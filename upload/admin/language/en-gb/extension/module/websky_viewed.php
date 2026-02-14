@@ -27,6 +27,7 @@ $_['button_upgrade']       = 'Upgrade';
 $_['tab_setting']      ='General';
 $_['tab_upgrade']       = 'Upgrade';
 $_['entry_display_type']       = 'Display By';
+$_['entry_design2_random_fill'] = 'Fill Design 2 Randomly To 4';
 $_['text_type_all_product']       = 'All Viewed Product';
 $_['text_type_category']       = 'By Category Sort';
 $_['text_type_manufacturer']       = 'By Manufacturer Sort';

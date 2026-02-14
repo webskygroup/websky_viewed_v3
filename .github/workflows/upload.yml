@@ -1,0 +1,50 @@
+name: Build OCMOD & Upload via FTP
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Prepare module name & target path
+        id: meta
+        run: |
+          RAW_MODULE="${GITHUB_REPOSITORY##*/}"
+
+          # تشخیص V3 / v3
+          if [[ "$RAW_MODULE" =~ [Vv]3 ]]; then
+            REMOTE_PATH="/public_html/dl/v3/"
+            CLEAN_MODULE=$(echo "$RAW_MODULE" | sed -E 's/_[Vv]3//g')
+          else
+            REMOTE_PATH="/public_html/dl/"
+            CLEAN_MODULE="$RAW_MODULE"
+          fi
+
+          ZIP_NAME="${CLEAN_MODULE}.ocmod.zip"
+
+          echo "zip=$ZIP_NAME" >> $GITHUB_OUTPUT
+          echo "remote=$REMOTE_PATH" >> $GITHUB_OUTPUT
+
+      - name: Create ZIP
+        run: |
+          mkdir -p dist
+          zip -r "dist/${{ steps.meta.outputs.zip }}" . \
+            -x ".git/*" ".github/*" "dist/*"
+
+      - name: Upload to FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.6
+        with:
+          server: opencart-ir.com
+          username: opencart
+          password: V$0eTsP]m,91
+          port: 21
+          protocol: ftp
+          local-dir: dist/
+          server-dir: ${{ steps.meta.outputs.remote }}

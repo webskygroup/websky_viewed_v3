@@ -85,6 +85,41 @@ class ModelExtensionModuleWebskyViewed extends Model
         }
     }
 
+    public function getRandomCategories(int $limit, array $exclude_category_ids = []): array
+    {
+        if ($limit < 1) {
+            return [];
+        }
+
+        $sql = "SELECT `c`.`category_id` FROM `" . DB_PREFIX . "category` `c`";
+        $sql .= " INNER JOIN `" . DB_PREFIX . "category_description` `cd` ON (`c`.`category_id` = `cd`.`category_id`)";
+        $sql .= " INNER JOIN `" . DB_PREFIX . "category_to_store` `c2s` ON (`c`.`category_id` = `c2s`.`category_id`)";
+        $sql .= " INNER JOIN `" . DB_PREFIX . "product_to_category` `p2c` ON (`c`.`category_id` = `p2c`.`category_id`)";
+        $sql .= " INNER JOIN `" . DB_PREFIX . "product` `p` ON (`p2c`.`product_id` = `p`.`product_id` AND `p`.`status` = '1' AND `p`.`date_available` <= NOW())";
+        $sql .= " INNER JOIN `" . DB_PREFIX . "product_to_store` `p2s` ON (`p`.`product_id` = `p2s`.`product_id`)";
+        $sql .= " WHERE `c`.`status` = '1'";
+        $sql .= " AND `cd`.`language_id` = '" . (int) $this->config->get('config_language_id') . "'";
+        $sql .= " AND `c2s`.`store_id` = '" . (int) $this->config->get('config_store_id') . "'";
+        $sql .= " AND `p2s`.`store_id` = '" . (int) $this->config->get('config_store_id') . "'";
+
+        if ($exclude_category_ids) {
+            $exclude = array_map('intval', $exclude_category_ids);
+            $sql .= " AND `c`.`category_id` NOT IN (" . implode(',', $exclude) . ")";
+        }
+
+        $sql .= " GROUP BY `c`.`category_id`";
+        $sql .= " ORDER BY RAND()";
+        $sql .= " LIMIT " . (int) $limit;
+
+        $query = $this->db->query($sql);
+
+        if (isset($query->num_rows)) {
+            return $query->rows;
+        }
+
+        return [];
+    }
+
     public function getManufacturerVisited(array $filter_data): array
     {
 

@@ -24,6 +24,7 @@ $_['entry_product_type']       = 'انتخاب نوع محصولات';
 $_['entry_category']       = 'دسته بندی';
 $_['text_category']       = 'دسته بندی ها';
 $_['entry_display_type']       = 'نمایش بر اساس';
+$_['entry_design2_random_fill'] = 'تکمیل تصادفی طرح 2 تا 4 مورد';
 $_['entry_order_by']   ='ترتیب';
 $_['text_design_1']   ='طرح 1';
 $_['text_design_2']   ='طرح 2';

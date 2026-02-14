@@ -1,0 +1,30 @@
+name: Notify Version API on Tag
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Extract version & module
+        id: meta
+        run: |
+          VERSION="${GITHUB_REF#refs/tags/}"
+          VERSION="${VERSION#v}"
+
+          MODULE="${GITHUB_REPOSITORY##*/}"
+
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "module=$MODULE" >> $GITHUB_OUTPUT
+
+      - name: Call version API
+        run: |
+          curl -G "https://opencart-ir.com/version/index.php" \
+            --data-urlencode "route=tool/websky_version" \
+            --data-urlencode "token=7294" \
+            --data-urlencode "module=${{ steps.meta.outputs.module }}" \
+            --data-urlencode "version=${{ steps.meta.outputs.version }}"

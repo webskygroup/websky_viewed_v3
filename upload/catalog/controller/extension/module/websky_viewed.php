@@ -115,6 +115,20 @@ class ControllerExtensionModulewebskyViewed extends Controller
 				];
 				$category_visited = $this->model_extension_module_websky_viewed->getCategoryVisited($filter_data);
 
+				$design2_random_fill = !empty($setting['design2_random_fill']);
+
+				if ((int) $setting['design'] === 2 && $design2_random_fill && count($category_visited) < 4) {
+					$extra_limit = 4 - count($category_visited);
+
+					if ($extra_limit > 0) {
+						$category_ids = array_column($category_visited, 'category_id');
+						$random_categories = $this->model_extension_module_websky_viewed->getRandomCategories($extra_limit, $category_ids);
+
+						if ($random_categories) {
+							$category_visited = array_merge($category_visited, $random_categories);
+						}
+					}
+				}
 
 				if ($category_visited) {
 

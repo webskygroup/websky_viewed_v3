@@ -128,6 +128,21 @@
 							</div>
 
 							<div class="form-group">
+								<label class="col-sm-2 control-label" for="input-design2-random-fill">{{ entry_design2_random_fill }}</label>
+								<div class="col-sm-10">
+									<select name="design2_random_fill" id="input-design2-random-fill" class="form-control">
+										{% if design2_random_fill %}
+											<option value="1" selected="selected">{{ text_enabled }}</option>
+											<option value="0">{{ text_disabled }}</option>
+										{% else %}
+											<option value="1">{{ text_enabled }}</option>
+											<option value="0" selected="selected">{{ text_disabled }}</option>
+										{% endif %}
+									</select>
+								</div>
+							</div>
+
+							<div class="form-group">
 								<label class="col-sm-2 control-label" for="app_name">{{ entry_limit }}</label>
 								<div class="col-sm-10">
 									<input type="text" name="limit" value="{{ limit }}" placeholder="" id="input-name" class="form-control"/>
